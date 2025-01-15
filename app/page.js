@@ -3,6 +3,8 @@ import { ArrowRight, Divide, TrendingUp, X } from "lucide-react";
 import { Menu } from "lucide-react";
 import { BarChart2 } from "lucide-react";
 import { useState } from "react";
+import Globe from "./path/to/Globe";
+
 import React from "react";
 
 const Home = () => {
