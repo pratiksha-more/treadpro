@@ -157,19 +157,28 @@ const Breadcrumb = ({ stock }) => (
 );
 
 const generateRandomData = (currentValue, points) => {
-  const data = [["Time", "Low", "Open", "Close", "High"]];
-
-  for (let i = 0; i < points; i++) {
-    const time = new Date(Date.now() - i * 5000).toLocaleTimeString();
-    const open = currentValue + Math.random() * 10 - 5;
-    const close = open + Math.random() * 10 - 5;
-    const low = Math.min(open, close) - Math.random() * 5;
-    const high = Math.max(open, close) + Math.random() * 5;
-    data.push([time, low, open, close, high]);
-  }
-
-  return data;
-};
+    const data = [["Time", "Low", "Open", "Close", "High"]];
+  
+    for (let i = 0; i < points; i++) {
+      const time = new Date(Date.now() - i * 5000).toLocaleTimeString();
+      const open = currentValue + Math.random() * 10 - 5;
+      const close = open + Math.random() * 10 - 5;
+      const low = Math.min(open, close) - Math.random() * 5;
+      const high = Math.max(open, close) + Math.random() * 5;
+      
+      // Convert numeric values to strings
+      data.push([
+        time,
+        low.toString(),
+        open.toString(),
+        close.toString(),
+        high.toString()
+      ]);
+    }
+  
+    return data;
+  };
+  
 
 const StockChart = ({ stock }) => {
   const [timeRange, setTimeRange] = useState("5M");
@@ -184,16 +193,17 @@ const StockChart = ({ stock }) => {
         getDataPoints(timeRange)
       );
       setData((prevData) => [...prevData, ...newData.slice(1)]);
-      setCurrentValue(newData[newData.length - 1][3]);
+      setCurrentValue(Number(newData[newData.length - 1][3])); 
       console.log(newData);
-      const initialValue = data[1][2];
+      const initialValue = Number(data[1][2]); 
       const changeValue = currentValue - initialValue;
       const changePercentage = (changeValue / initialValue) * 100;
       setChange({ value: changeValue, percentage: changePercentage });
     }, 5000);
-
+  
     return () => clearInterval(interval);
-  }, [timeRange, currentValue, data]);
+  }, [currentValue, timeRange, data]);
+  
 
   const getDataPoints = (range) => {
     switch (range) {
